@@ -226,7 +226,7 @@ GameObject:
   - component: {fileID: 755539448}
   - component: {fileID: 755539447}
   m_Layer: 0
-  m_Name: CelularAutomata
+  m_Name: CelularAutomataManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -244,6 +244,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 123ae78a3ef6ec94ca4902d2f8961904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  width: 3
+  height: 3
+  aliveColor: {r: 1, g: 0, b: 0, a: 1}
+  deadColor: {r: 0.0925596, g: 0.13070592, b: 0.4528302, a: 1}
+  cellPrefab: {fileID: 9100077007088727951, guid: f32e8991f329382409d6433ed2782e7a, type: 3}
+  ruleNum: 0
+  waitTime: 3
 --- !u!4 &755539448
 Transform:
   m_ObjectHideFlags: 0
