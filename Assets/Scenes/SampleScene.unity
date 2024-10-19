@@ -249,6 +249,7 @@ MonoBehaviour:
   aliveColor: {r: 1, g: 0, b: 0, a: 1}
   deadColor: {r: 0.0925596, g: 0.13070592, b: 0.4528302, a: 1}
   cellPrefab: {fileID: 9100077007088727951, guid: f32e8991f329382409d6433ed2782e7a, type: 3}
+  ruleNumber: 30
   waitTime: 0.5
 --- !u!4 &755539448
 Transform:

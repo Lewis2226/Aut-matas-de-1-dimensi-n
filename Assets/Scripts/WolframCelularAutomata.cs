@@ -9,6 +9,7 @@ public class WolframCelularAutomata : MonoBehaviour
     public Color aliveColor;
     public Color deadColor;
     public GameObject cellPrefab;
+    public int ruleNumber;
     private bool[,] totalCells; 
     private bool[] currentGeneration; 
     private GameObject[,] cellsOnScreen; 
@@ -23,9 +24,10 @@ public class WolframCelularAutomata : MonoBehaviour
         nextState = new bool[width]; 
         cellsOnScreen = new GameObject[height, width];
 
-        CreateBoard();
-        LifeGiver();  
-        StartSimulation(); 
+        ToBinary(ruleNumber);
+        //CreateBoard();
+        //LifeGiver();  
+        //StartSimulation(); 
     }
 
     void CreateBoard()
@@ -124,13 +126,36 @@ public class WolframCelularAutomata : MonoBehaviour
             }
         }
     }
+    public string ToBinary(int number) 
+    {
+        
+        string binary = "";
 
+        if (number == 0)
+            return "0"; 
+        
+        while (number > 0) //Tranforma el numero en binario
+        {
+            int remainder = number % 2;
+            binary = remainder + binary; 
+            number /= 2;
+        }
+        
+        while(binary.Length < 8) //Le agrega ceros al binario hasta llegar a 8 para convertirlo en la regla.
+        {
+            binary = 0 + binary;
+        }
+        print($"El numero {ruleNumber}, es igual a {binary} en binario");
+        return binary;
+        
+    }
     public void StartSimulation()
     {
         StartCoroutine(NewGeneration());
     }
 
     IEnumerator NewGeneration()//Muestra la siguiente generacion
+
     {
         while (true)
         {
