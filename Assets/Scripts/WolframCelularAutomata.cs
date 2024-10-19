@@ -30,7 +30,7 @@ public class WolframCelularAutomata : MonoBehaviour
         //StartSimulation(); 
     }
 
-    void CreateBoard()
+    void CreateBoard()//Crea el tablero con los agentes muertos
     {
         for (int y = 0; y < height; y++)
         {
@@ -44,7 +44,7 @@ public class WolframCelularAutomata : MonoBehaviour
         }
     }
 
-    void LifeGiver()// Da vida de forma aleatoria a las células
+    void LifeGiver()//Da vida de forma aleatoria a las células
     {
         for (int i = 0; i < width; i++)
         {
@@ -60,14 +60,13 @@ public class WolframCelularAutomata : MonoBehaviour
             
         }
 
-        
         for (int x = 0; x < width; x++)
         {
-            totalCells[0, x] = currentGeneration[x]; 
+          totalCells[0, x] = currentGeneration[x]; 
         }
     }
 
-    bool CheckRule(bool left, bool center, bool right) // Revisa la regla dada en este caso la 30
+    bool CheckRule(bool left, bool center, bool right)//Revisa la regla dada en este caso la 30
     {
         if (left && center && right) return false;  // 111 -> 0
         if (left && center && !right) return false; // 110 -> 0
@@ -82,7 +81,6 @@ public class WolframCelularAutomata : MonoBehaviour
 
     void NextGen()//Genera la siguinte generacion usando la regla
     {
-
         for (int i = 0; i < width; i++)
         {
             bool left = (i == 0) ? false : currentGeneration[i - 1];  
@@ -92,7 +90,6 @@ public class WolframCelularAutomata : MonoBehaviour
             nextState[i] = CheckRule(left, center, right);
         }
 
-        
         for (int x = 0; x < width; x++)
         {
             for (int y = height - 1; y > 0; y--)
@@ -110,7 +107,6 @@ public class WolframCelularAutomata : MonoBehaviour
 
     public void ShowSimulation()//Muestra la simulación
     {
-       
         for (int y = 0; y < height; y++) 
         {
             for (int x = 0; x < width; x++) 
@@ -126,36 +122,33 @@ public class WolframCelularAutomata : MonoBehaviour
             }
         }
     }
-    public string ToBinary(int number) 
+    public string ToBinary(int number)//Convierte el número de la regla a binario 
     {
-        
         string binary = "";
 
         if (number == 0)
             return "0"; 
-        
-        while (number > 0) //Tranforma el numero en binario
+
+        while (number > 0)//Tranforma el número en binario
         {
             int remainder = number % 2;
             binary = remainder + binary; 
             number /= 2;
         }
         
-        while(binary.Length < 8) //Le agrega ceros al binario hasta llegar a 8 para convertirlo en la regla.
+        while(binary.Length < 8)//Le agrega ceros al binario hasta llegar a 8 para convertirlo en la regla.
         {
             binary = 0 + binary;
         }
         print($"El numero {ruleNumber}, es igual a {binary} en binario");
-        return binary;
-        
+        return binary;   
     }
-    public void StartSimulation()
+    public void StartSimulation()//Incia la simulación
     {
         StartCoroutine(NewGeneration());
     }
 
-    IEnumerator NewGeneration()//Muestra la siguiente generacion
-
+    IEnumerator NewGeneration()//Muestra la siguiente generación
     {
         while (true)
         {
