@@ -5,25 +5,65 @@ using TMPro;
 
 public class WolframCelularAutomata : MonoBehaviour
 {
+    //Variables publicas
     public int width;
     public int height;
     public Color aliveColor;
     public Color deadColor;
     public GameObject cellPrefab;
-    public int ruleNumber;
 
+    //Variables privadas
     [SerializeField] private float waitTime;
     private bool[,] totalCells;
     private bool[] currentGeneration;
     private GameObject[,] cellsOnScreen;
     private bool[] nextState;
     private string binary = "";
+    private int ruleNumber;
     private int currentRow = 0;
-    private bool runnigSimulation;
+    private bool runnigSimulation = false;
 
+    //Input Fields
     public TMP_InputField ruleString;
     public TMP_InputField widthString;
     public TMP_InputField heightString;
+
+    private void Update()
+    {
+        if (!runnigSimulation)//Permite cambiar los datos mientras la simulacion  no este ejecutandose
+        {
+            if (Input.GetMouseButtonDown(0))//Permite marcar  las células como vivas o muertas
+            {
+                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+                int x = Mathf.FloorToInt(mousePos.x);
+                int y = Mathf.FloorToInt(mousePos.y);
+
+                if (x >= 0 && x < width)
+                {
+                    totalCells[0, x] = !totalCells[0, x];
+                    ShowSimulation();
+                }
+            }
+
+            //Asigna los valores del tablero y la regla
+            if (ruleString != null)
+            {
+              int.TryParse(ruleString.text, out ruleNumber);
+            }
+
+            if(widthString != null)
+            {
+                int.TryParse(widthString.text, out width);
+            }
+
+            if(heightString != null)
+            {
+                int.TryParse(heightString.text, out height);
+            }
+        }
+    }
+
     void CreateBoard()//Crea el tablero con los agentes muertos
     {
         for (int y = 0; y < height; y++)
@@ -39,7 +79,7 @@ public class WolframCelularAutomata : MonoBehaviour
     }
 
      public void LifeGiver()//Da vida de forma aleatoria a las células
-    {
+     {
         for (int i = 0; i < width; i++)
         {
             int rnd = Random.Range(0, 2);
@@ -50,7 +90,9 @@ public class WolframCelularAutomata : MonoBehaviour
         {
             totalCells[currentRow, x] = currentGeneration[x];
         }
-    }
+        ShowSimulation();
+     }
+
     bool CheckRule(bool left, bool center, bool right)//Revisión de la relga 
     {
         int index = (left ? 4 : 0) + (center ? 2 : 0) + (right ? 1 : 0);
@@ -163,6 +205,7 @@ public class WolframCelularAutomata : MonoBehaviour
         cellsOnScreen = new GameObject[height, width];
         CreateBoard();
         ToBinary(ruleNumber);
+        runnigSimulation = false;
     }
 
     IEnumerator NewGeneration()//Muestra la siguiente generación

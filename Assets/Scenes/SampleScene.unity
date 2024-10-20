@@ -391,7 +391,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 305008224}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 755539447}
+        m_TargetAssemblyTypeName: WolframCelularAutomata, Assembly-CSharp
+        m_MethodName: LifeGiver
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &305008224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -512,7 +524,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 317377462}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 755539447}
+        m_TargetAssemblyTypeName: WolframCelularAutomata, Assembly-CSharp
+        m_MethodName: StopSimulation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &317377462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1067,7 +1091,6 @@ MonoBehaviour:
   aliveColor: {r: 0.9339623, g: 0.2878248, b: 0.2878248, a: 1}
   deadColor: {r: 0.51836354, g: 0.5330243, b: 0.9528302, a: 1}
   cellPrefab: {fileID: 9100077007088727951, guid: f32e8991f329382409d6433ed2782e7a, type: 3}
-  ruleNumber: 17
   waitTime: 1
   ruleString: {fileID: 1193333681}
   widthString: {fileID: 933261020}
@@ -1499,7 +1522,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1155887168}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 755539447}
+        m_TargetAssemblyTypeName: WolframCelularAutomata, Assembly-CSharp
+        m_MethodName: ContinueSimulation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1155887168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2622,7 +2657,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1634320209}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 755539447}
+        m_TargetAssemblyTypeName: WolframCelularAutomata, Assembly-CSharp
+        m_MethodName: StartSimulation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1634320209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3774,7 +3821,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2099948378}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 755539447}
+        m_TargetAssemblyTypeName: WolframCelularAutomata, Assembly-CSharp
+        m_MethodName: Generateboard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2099948378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3895,7 +3954,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2126485094}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 755539447}
+        m_TargetAssemblyTypeName: WolframCelularAutomata, Assembly-CSharp
+        m_MethodName: ClearGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2126485094
 MonoBehaviour:
   m_ObjectHideFlags: 0
