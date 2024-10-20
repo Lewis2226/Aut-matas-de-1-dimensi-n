@@ -10,13 +10,14 @@ public class WolframCelularAutomata : MonoBehaviour
     public Color deadColor;
     public GameObject cellPrefab;
     public int ruleNumber;
+    [SerializeField] private float waitTime;
     private bool[,] totalCells;
     private bool[] currentGeneration;
     private GameObject[,] cellsOnScreen;
     private bool[] nextState;
     private string binary = "";
-    [SerializeField] private float waitTime;
-    private int currentRow = 0; // Nueva variable para llevar el control de la fila actual
+    private int currentRow = 0;
+    private bool runnigSimulation;
 
     // Start is called before the first frame update
     void Start()
@@ -58,7 +59,7 @@ public class WolframCelularAutomata : MonoBehaviour
             totalCells[currentRow, x] = currentGeneration[x];
         }
     }
-    bool CheckRule(bool left, bool center, bool right) //Revisión de la relga 
+    bool CheckRule(bool left, bool center, bool right)//Revisión de la relga 
     {
         int index = (left ? 4 : 0) + (center ? 2 : 0) + (right ? 1 : 0);
 
@@ -77,11 +78,11 @@ public class WolframCelularAutomata : MonoBehaviour
             nextState[i] = CheckRule(left, center, right);
         }
 
-        currentRow++; // Avanza a la siguiente fila
+        currentRow++; 
 
-        if (currentRow >= height) // Si la fila actual excede el límite, detenemos la simulación
+        if (currentRow >= height) 
         {
-            StopAllCoroutines(); // Detiene la simulación
+            StopAllCoroutines(); 
             return;
         }
 
@@ -135,12 +136,36 @@ public class WolframCelularAutomata : MonoBehaviour
 
     public void StartSimulation()//Inicia la simulación
     {
+        runnigSimulation = true;
         StartCoroutine(NewGeneration());
+    }
+
+    public void StopSimulation()//Detiene la simulación
+    {
+        runnigSimulation = false;
+        StopAllCoroutines();
+    }
+
+    public void ContinueSimulation()//Continua la simulación
+    {
+        runnigSimulation=true;
+        StartSimulation();
+    }
+
+    public void ClearGame()//Limpia el tablero
+    {
+        for(int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                Destroy(cellsOnScreen[x, y]);
+            }
+        }
     }
 
     IEnumerator NewGeneration()//Muestra la siguiente generación
     {
-        while (true)
+        while (runnigSimulation)
         {
             NextGen();
             ShowSimulation();

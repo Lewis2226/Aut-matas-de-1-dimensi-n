@@ -159,7 +159,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.2460543, g: 0.36315477, b: 0.5471698, a: 0}
+  m_BackGroundColor: {r: 0.01886791, g: 0.01886791, b: 0.01886791, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -209,7 +209,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 4.57, y: -4.57, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -244,13 +244,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 123ae78a3ef6ec94ca4902d2f8961904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 20
-  height: 20
+  width: 10
+  height: 10
   aliveColor: {r: 0.9339623, g: 0.2878248, b: 0.2878248, a: 1}
   deadColor: {r: 0.51836354, g: 0.5330243, b: 0.9528302, a: 1}
   cellPrefab: {fileID: 9100077007088727951, guid: f32e8991f329382409d6433ed2782e7a, type: 3}
   ruleNumber: 17
-  waitTime: 0.5
+  waitTime: 1
 --- !u!4 &755539448
 Transform:
   m_ObjectHideFlags: 0
