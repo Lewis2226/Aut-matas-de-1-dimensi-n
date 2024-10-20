@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class WolframCelularAutomata : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class WolframCelularAutomata : MonoBehaviour
     public Color deadColor;
     public GameObject cellPrefab;
     public int ruleNumber;
+
     [SerializeField] private float waitTime;
     private bool[,] totalCells;
     private bool[] currentGeneration;
@@ -19,19 +21,9 @@ public class WolframCelularAutomata : MonoBehaviour
     private int currentRow = 0;
     private bool runnigSimulation;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        totalCells = new bool[height, width];
-        currentGeneration = new bool[width];
-        nextState = new bool[width];
-        cellsOnScreen = new GameObject[height, width];
-        ToBinary(ruleNumber);
-        CreateBoard();
-        LifeGiver();
-        StartSimulation();
-    }
-
+    public TMP_InputField ruleString;
+    public TMP_InputField widthString;
+    public TMP_InputField heightString;
     void CreateBoard()//Crea el tablero con los agentes muertos
     {
         for (int y = 0; y < height; y++)
@@ -46,7 +38,7 @@ public class WolframCelularAutomata : MonoBehaviour
         }
     }
 
-    void LifeGiver()//Da vida de forma aleatoria a las células
+     public void LifeGiver()//Da vida de forma aleatoria a las células
     {
         for (int i = 0; i < width; i++)
         {
@@ -161,6 +153,16 @@ public class WolframCelularAutomata : MonoBehaviour
                 Destroy(cellsOnScreen[x, y]);
             }
         }
+    }
+
+    public void Generateboard()//Genera el tablero
+    {
+        totalCells = new bool[height, width];
+        currentGeneration = new bool[width];
+        nextState = new bool[width];
+        cellsOnScreen = new GameObject[height, width];
+        CreateBoard();
+        ToBinary(ruleNumber);
     }
 
     IEnumerator NewGeneration()//Muestra la siguiente generación
