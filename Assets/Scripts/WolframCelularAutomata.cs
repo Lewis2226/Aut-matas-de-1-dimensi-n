@@ -96,7 +96,7 @@ public class WolframCelularAutomata : MonoBehaviour
 
     bool CheckRule(bool left, bool center, bool right)//Revisión de la relga 
     {
-        if (binary[0] == '0')
+        if(binary[0] == '0')
         {
             if (left && center && right) return false;  // 111 -> 0
         }
@@ -234,11 +234,11 @@ public class WolframCelularAutomata : MonoBehaviour
 
     public void ClearGame()//Limpia el tablero
     {
-        for(int x = 0; x < width; x++)
+        for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-               Destroy(cellsOnScreen[y, x]);
+                Destroy(cellsOnScreen[x, y]);
             }
         }
     }
