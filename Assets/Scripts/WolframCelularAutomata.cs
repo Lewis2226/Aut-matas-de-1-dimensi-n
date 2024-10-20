@@ -39,9 +39,10 @@ public class WolframCelularAutomata : MonoBehaviour
                 int x = Mathf.FloorToInt(mousePos.x);
                 int y = Mathf.FloorToInt(mousePos.y);
 
-                if (x >= 0 && x < width)
+                if (x >= 0 && x < width && y >= 0 && y < height)
                 {
                     totalCells[0, x] = !totalCells[0, x];
+                    currentGeneration[x] = !currentGeneration[x];
                     ShowSimulation();
                 }
             }
@@ -95,10 +96,55 @@ public class WolframCelularAutomata : MonoBehaviour
 
     bool CheckRule(bool left, bool center, bool right)//Revisión de la relga 
     {
-        int index = (left ? 4 : 0) + (center ? 2 : 0) + (right ? 1 : 0);
+        if (binary[0] == '0')
+        {
+            if (left && center && right) return false;  // 111 -> 0
+        }
+        else { return true; }
 
-        
-        return (ruleNumber & (1 << index)) != 0;
+        if (binary[1] == '0')
+        {
+            if (left && center && !right) return false; // 110 -> 0
+        }
+        else { return true; }
+
+        if (binary[2] == '0')
+        {
+            if (left && !center && right) return false; // 101 -> 0
+        }
+        else { return true; }
+
+        if (binary[3] == '1')
+        {
+            if (left && !center && !right) return true; // 100 -> 1
+        }
+        else { return false; }
+
+        if (binary[4] == '1')
+        {
+            if (!left && center && right) return true;  // 011 -> 1
+        }
+        else { return false; }
+
+        if (binary[5] == '1')
+        {
+            if (!left && center && !right) return true; // 010 -> 1
+        }
+        else { return false; }
+
+        if (binary[6] == '1')
+        {
+            if (!left && !center && right) return true; // 001 -> 1
+        }
+        else { return false; }
+
+        if (binary[7] == '0')
+        {
+            if (!left && !center && !right) return false;//000 -> 0
+        }
+        else { return true; }
+
+        return false;
     }
     
     void NextGen()//Genera la siguinte generacion usando la regla
@@ -192,7 +238,7 @@ public class WolframCelularAutomata : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                Destroy(cellsOnScreen[x, y]);
+               Destroy(cellsOnScreen[y, x]);
             }
         }
     }
