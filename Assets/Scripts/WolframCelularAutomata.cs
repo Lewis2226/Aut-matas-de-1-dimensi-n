@@ -4,42 +4,43 @@ using UnityEngine;
 
 public class WolframCelularAutomata : MonoBehaviour
 {
-    public int width; 
-    public int height; 
+    public int width;
+    public int height;
     public Color aliveColor;
     public Color deadColor;
     public GameObject cellPrefab;
     public int ruleNumber;
-    private bool[,] totalCells; 
-    private bool[] currentGeneration; 
-    private GameObject[,] cellsOnScreen; 
-    private bool[] nextState; 
+    private bool[,] totalCells;
+    private bool[] currentGeneration;
+    private GameObject[,] cellsOnScreen;
+    private bool[] nextState;
+    private string binary = "";
     [SerializeField] private float waitTime;
+    private int currentRow = 0; // Nueva variable para llevar el control de la fila actual
 
     // Start is called before the first frame update
     void Start()
     {
-        totalCells = new bool[height, width]; 
+        totalCells = new bool[height, width];
         currentGeneration = new bool[width];
-        nextState = new bool[width]; 
+        nextState = new bool[width];
         cellsOnScreen = new GameObject[height, width];
-
         ToBinary(ruleNumber);
-        //CreateBoard();
-        //LifeGiver();  
-        //StartSimulation(); 
+        CreateBoard();
+        LifeGiver();
+        StartSimulation();
     }
 
     void CreateBoard()//Crea el tablero con los agentes muertos
     {
         for (int y = 0; y < height; y++)
         {
-            for (int x = 0; x < width; x++) 
+            for (int x = 0; x < width; x++)
             {
                 Vector3 position = new Vector3(x, -y, 0);
-                GameObject cell = Instantiate(cellPrefab, position, Quaternion.identity); 
-                cell.GetComponent<SpriteRenderer>().color = deadColor; 
-                cellsOnScreen[y, x] = cell; 
+                GameObject cell = Instantiate(cellPrefab, position, Quaternion.identity);
+                cell.GetComponent<SpriteRenderer>().color = deadColor;
+                cellsOnScreen[y, x] = cell;
             }
         }
     }
@@ -48,55 +49,45 @@ public class WolframCelularAutomata : MonoBehaviour
     {
         for (int i = 0; i < width; i++)
         {
-         int rnd = Random.Range(0, 2);
-         if(rnd == 0)
-         {
-           currentGeneration[i] = true;
-         }
-         else
-         {
-           currentGeneration[i] = false;
-         }
-            
+            int rnd = Random.Range(0, 2);
+            currentGeneration[i] = rnd == 0 ? true : false;
         }
 
         for (int x = 0; x < width; x++)
         {
-          totalCells[0, x] = currentGeneration[x]; 
+            totalCells[currentRow, x] = currentGeneration[x];
         }
     }
-
-    bool CheckRule(bool left, bool center, bool right)//Revisa la regla dada en este caso la 30
+    bool CheckRule(bool left, bool center, bool right) //Revisión de la relga 
     {
-        if (left && center && right) return false;  // 111 -> 0
-        if (left && center && !right) return false; // 110 -> 0
-        if (left && !center && right) return false; // 101 -> 0
-        if (left && !center && !right) return true; // 100 -> 1
-        if (!left && center && right) return true;  // 011 -> 1
-        if (!left && center && !right) return true; // 010 -> 1
-        if (!left && !center && right) return true; // 001 -> 1
-        if (!left && !center && !right) return false;//000 -> 0
-        return false;
-    }
+        int index = (left ? 4 : 0) + (center ? 2 : 0) + (right ? 1 : 0);
 
+        
+        return (ruleNumber & (1 << index)) != 0;
+    }
+    
     void NextGen()//Genera la siguinte generacion usando la regla
     {
         for (int i = 0; i < width; i++)
         {
-            bool left = (i == 0) ? false : currentGeneration[i - 1];  
-            bool center = currentGeneration[i];                       
-            bool right = (i == width - 1) ? false : currentGeneration[i + 1];  
+            bool left = (i == 0) ? false : currentGeneration[i - 1];
+            bool center = currentGeneration[i];
+            bool right = (i == width - 1) ? false : currentGeneration[i + 1];
 
             nextState[i] = CheckRule(left, center, right);
         }
 
+        currentRow++; // Avanza a la siguiente fila
+
+        if (currentRow >= height) // Si la fila actual excede el límite, detenemos la simulación
+        {
+            StopAllCoroutines(); // Detiene la simulación
+            return;
+        }
+
         for (int x = 0; x < width; x++)
         {
-            for (int y = height - 1; y > 0; y--)
-            {
-                totalCells[y, x] = totalCells[y - 1, x];
-            }
-            totalCells[0, x] = nextState[x];
+            totalCells[currentRow, x] = nextState[x];
         }
 
         for (int i = 0; i < width; i++)
@@ -107,43 +98,42 @@ public class WolframCelularAutomata : MonoBehaviour
 
     public void ShowSimulation()//Muestra la simulación
     {
-        for (int y = 0; y < height; y++) 
+        for (int y = 0; y < height; y++)
         {
-            for (int x = 0; x < width; x++) 
+            for (int x = 0; x < width; x++)
             {
-                if (totalCells[y, x]) 
+                if (totalCells[y, x])
                 {
                     cellsOnScreen[y, x].GetComponent<SpriteRenderer>().color = aliveColor;
                 }
-                else 
+                else
                 {
                     cellsOnScreen[y, x].GetComponent<SpriteRenderer>().color = deadColor;
                 }
             }
         }
     }
-    public string ToBinary(int number)//Convierte el número de la regla a binario 
+
+    public string ToBinary(int number)//Convierte el número de la regla a binario
     {
-        string binary = "";
-
         if (number == 0)
-            return "0"; 
+            return "0";
 
-        while (number > 0)//Tranforma el número en binario
+        while (number > 0)
         {
             int remainder = number % 2;
-            binary = remainder + binary; 
+            binary = remainder + binary;
             number /= 2;
         }
-        
-        while(binary.Length < 8)//Le agrega ceros al binario hasta llegar a 8 para convertirlo en la regla.
+
+        while (binary.Length < 8)
         {
             binary = 0 + binary;
         }
-        print($"El numero {ruleNumber}, es igual a {binary} en binario");
-        return binary;   
+        return binary;
     }
-    public void StartSimulation()//Incia la simulación
+
+    public void StartSimulation()//Inicia la simulación
     {
         StartCoroutine(NewGeneration());
     }
@@ -153,8 +143,8 @@ public class WolframCelularAutomata : MonoBehaviour
         while (true)
         {
             NextGen();
-            ShowSimulation(); 
-            yield return new WaitForSeconds(waitTime); 
+            ShowSimulation();
+            yield return new WaitForSeconds(waitTime);
         }
     }
 
