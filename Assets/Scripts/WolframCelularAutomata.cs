@@ -5,14 +5,14 @@ using TMPro;
 
 public class WolframCelularAutomata : MonoBehaviour
 {
-    //Variables publicas
+    // Variables públicas
     public int width;
     public int height;
     public Color aliveColor;
     public Color deadColor;
     public GameObject cellPrefab;
 
-    //Variables privadas
+    // Variables privadas
     [SerializeField] private float waitTime;
     private bool[,] totalCells;
     private bool[] currentGeneration;
@@ -21,18 +21,19 @@ public class WolframCelularAutomata : MonoBehaviour
     private string binary = "";
     private int ruleNumber;
     private int currentRow = 0;
-    private bool runnigSimulation = false;
+    private bool runningSimulation = false;
 
-    //Input Fields
+    // Input Fields
     public TMP_InputField ruleString;
     public TMP_InputField widthString;
     public TMP_InputField heightString;
 
     private void Update()
     {
-        if (!runnigSimulation)//Permite cambiar los datos mientras la simulacion  no este ejecutandose
+        if (!runningSimulation)
         {
-            if (Input.GetMouseButtonDown(0))//Permite marcar  las células como vivas o muertas
+            // Permite marcar las células como vivas o muertas
+            if (Input.GetMouseButtonDown(0))
             {
                 Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
@@ -47,25 +48,25 @@ public class WolframCelularAutomata : MonoBehaviour
                 }
             }
 
-            //Asigna los valores del tablero y la regla
+            // Asigna los valores del tablero y la regla
             if (ruleString != null)
             {
-              int.TryParse(ruleString.text, out ruleNumber);
+                int.TryParse(ruleString.text, out ruleNumber);
             }
 
-            if(widthString != null)
+            if (widthString != null)
             {
                 int.TryParse(widthString.text, out width);
             }
 
-            if(heightString != null)
+            if (heightString != null)
             {
                 int.TryParse(heightString.text, out height);
             }
         }
     }
 
-    void CreateBoard()//Crea el tablero con los agentes muertos
+    void CreateBoard()// Crea el tablero con los agentes muertos
     {
         for (int y = 0; y < height; y++)
         {
@@ -79,12 +80,12 @@ public class WolframCelularAutomata : MonoBehaviour
         }
     }
 
-     public void LifeGiver()//Da vida de forma aleatoria a las células
-     {
+    public void LifeGiver() // Da vida de forma aleatoria a las células
+    {
         for (int i = 0; i < width; i++)
         {
             int rnd = Random.Range(0, 2);
-            currentGeneration[i] = rnd == 0 ? true : false;
+            currentGeneration[i] = rnd == 0;
         }
 
         for (int x = 0; x < width; x++)
@@ -92,62 +93,19 @@ public class WolframCelularAutomata : MonoBehaviour
             totalCells[currentRow, x] = currentGeneration[x];
         }
         ShowSimulation();
-     }
-
-    bool CheckRule(bool left, bool center, bool right)//Revisión de la relga 
-    {
-        if(binary[0] == '0')
-        {
-            if (left && center && right) return false;  // 111 -> 0
-        }
-        else { return true; }
-
-        if (binary[1] == '0')
-        {
-            if (left && center && !right) return false; // 110 -> 0
-        }
-        else { return true; }
-
-        if (binary[2] == '0')
-        {
-            if (left && !center && right) return false; // 101 -> 0
-        }
-        else { return true; }
-
-        if (binary[3] == '1')
-        {
-            if (left && !center && !right) return true; // 100 -> 1
-        }
-        else { return false; }
-
-        if (binary[4] == '1')
-        {
-            if (!left && center && right) return true;  // 011 -> 1
-        }
-        else { return false; }
-
-        if (binary[5] == '1')
-        {
-            if (!left && center && !right) return true; // 010 -> 1
-        }
-        else { return false; }
-
-        if (binary[6] == '1')
-        {
-            if (!left && !center && right) return true; // 001 -> 1
-        }
-        else { return false; }
-
-        if (binary[7] == '0')
-        {
-            if (!left && !center && !right) return false;//000 -> 0
-        }
-        else { return true; }
-
-        return false;
     }
-    
-    void NextGen()//Genera la siguinte generacion usando la regla
+
+    // Simplificar el método CheckRule usando un vecindario binario
+    bool CheckRule(bool left, bool center, bool right)
+    {
+        // Convertir el vecindario a un número binario
+        int neighborhood = (left ? 4 : 0) + (center ? 2 : 0) + (right ? 1 : 0);
+
+        // Aplicar la regla: si la posición correspondiente en la regla binaria es '1', la célula vive, si es '0', muere.
+        return binary[7 - neighborhood] == '1';
+    }
+
+    void NextGen()// Genera la siguiente generación usando la regla
     {
         for (int i = 0; i < width; i++)
         {
@@ -158,11 +116,11 @@ public class WolframCelularAutomata : MonoBehaviour
             nextState[i] = CheckRule(left, center, right);
         }
 
-        currentRow++; 
+        currentRow++;
 
-        if (currentRow >= height) 
+        if (currentRow >= height)
         {
-            StopAllCoroutines(); 
+            StopAllCoroutines();
             return;
         }
 
@@ -177,62 +135,43 @@ public class WolframCelularAutomata : MonoBehaviour
         }
     }
 
-    public void ShowSimulation()//Muestra la simulación
+    public void ShowSimulation()// Muestra la simulación
     {
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
-                if (totalCells[y, x])
-                {
-                    cellsOnScreen[y, x].GetComponent<SpriteRenderer>().color = aliveColor;
-                }
-                else
-                {
-                    cellsOnScreen[y, x].GetComponent<SpriteRenderer>().color = deadColor;
-                }
+                cellsOnScreen[y, x].GetComponent<SpriteRenderer>().color = totalCells[y, x] ? aliveColor : deadColor;
             }
         }
     }
 
-    public string ToBinary(int number)//Convierte el número de la regla a binario
+    public string ToBinary(int number)// Convierte el número de la regla a binario
     {
-        if (number == 0)
-            return "0";
-
-        while (number > 0)
-        {
-            int remainder = number % 2;
-            binary = remainder + binary;
-            number /= 2;
-        }
-
-        while (binary.Length < 8)
-        {
-            binary = 0 + binary;
-        }
+        binary = System.Convert.ToString(number, 2).PadLeft(8, '0');
+        Debug.Log(binary);
         return binary;
     }
 
-    public void StartSimulation()//Inicia la simulación
+    public void StartSimulation()// Inicia la simulación
     {
-        runnigSimulation = true;
+        runningSimulation = true;
         StartCoroutine(NewGeneration());
     }
 
-    public void StopSimulation()//Detiene la simulación
+    public void StopSimulation()// Detiene la simulación
     {
-        runnigSimulation = false;
+        runningSimulation = false;
         StopAllCoroutines();
     }
 
-    public void ContinueSimulation()//Continua la simulación
+    public void ContinueSimulation()// Continúa la simulación
     {
-        runnigSimulation=true;
+        runningSimulation = true;
         StartSimulation();
     }
 
-    public void ClearGame()//Limpia el tablero
+    public void ClearGame()// Limpia el tablero
     {
         for (int x = 0; x < width; x++)
         {
@@ -243,7 +182,7 @@ public class WolframCelularAutomata : MonoBehaviour
         }
     }
 
-    public void Generateboard()//Genera el tablero
+    public void Generateboard()// Genera el tablero
     {
         totalCells = new bool[height, width];
         currentGeneration = new bool[width];
@@ -251,12 +190,12 @@ public class WolframCelularAutomata : MonoBehaviour
         cellsOnScreen = new GameObject[height, width];
         CreateBoard();
         ToBinary(ruleNumber);
-        runnigSimulation = false;
+        runningSimulation = false;
     }
 
-    IEnumerator NewGeneration()//Muestra la siguiente generación
+    IEnumerator NewGeneration()// Muestra la siguiente generación
     {
-        while (runnigSimulation)
+        while (runningSimulation)
         {
             NextGen();
             ShowSimulation();

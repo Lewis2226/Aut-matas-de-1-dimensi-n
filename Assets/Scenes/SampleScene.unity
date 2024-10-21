@@ -1088,8 +1088,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 10
   height: 10
-  aliveColor: {r: 0.9339623, g: 0.2878248, b: 0.2878248, a: 1}
-  deadColor: {r: 0.51836354, g: 0.5330243, b: 0.9528302, a: 1}
+  aliveColor: {r: 0.9528302, g: 0, b: 0, a: 1}
+  deadColor: {r: 0.09458858, g: 0.027738184, b: 0.5188679, a: 1}
   cellPrefab: {fileID: 9100077007088727951, guid: f32e8991f329382409d6433ed2782e7a, type: 3}
   waitTime: 1
   ruleString: {fileID: 1193333681}
